@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Expenses App
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,58 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Expenses App</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <form #f="ngForm">
+    <div id="expense">
+      <ion-text><p>Enter your expense amount:</p></ion-text>
+      <ion-item class="ion-no-padding">
+        <ion-input type="number" min="0.01" step="0.01" [ngModel] name="amount" required #numberCtrl="ngModel">£</ion-input>
+        <ion-label style="color: red;" *ngIf="!numberCtrl.valid && numberCtrl.touched">Not a valid number!</ion-label>
+      </ion-item>
+      <ion-button type="button" class="image" (click)="onUploadPhoto()">Upload Receipt Photo</ion-button>
+      <ion-button type="button" [disabled]="disabled || !numberCtrl.valid" (click)="onSubmitExp(f)">Add Expense</ion-button>
+      <ion-text><p style="font-size: 0.8rem;">Note: When "Add Expense" is clicked, it may take a few seconds for the expense to load in the expense list.</p></ion-text>
+    </div>
+  </form>
+    
+  <div id="expense-list">
+    <ion-text><p>Expense list:</p></ion-text>
+    <ion-grid style="text-align: center;">
+      <ion-row style="font-weight: bold;">
+        <ion-col size="3" style="border-style: solid; border-width: thin;">
+          <ion-label>Amount</ion-label>
+        </ion-col>
+        <ion-col size="3" style="border-style: solid; border-width: thin;">
+          <ion-label>Photo</ion-label>
+        </ion-col>
+        <ion-col size="3" style="border-style: solid; border-width: thin;">
+          <ion-label>Date & Time Stamp</ion-label>
+        </ion-col>
+        <ion-col size="3" style="border-style: solid; border-width: thin;">
+          <ion-label>Delete?</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let i of arr">
+        <ion-col size="3" style="border-style: solid; border-width: thin;">£{{ i.amount | number:'1.2-2' }}</ion-col>
+        <ion-col size="3" style="border-style: solid; border-width: thin;">
+          <ion-img [src]="i.photo" alt="Photo Unavailable"></ion-img>
+        </ion-col>
+        <ion-col size="3" style="border-style: solid; border-width: thin; font-size: 0.8rem;">{{ i.datetime }}</ion-col>
+        <ion-col size="3" style="border-style: solid; border-width: thin;">
+          <ion-button (click)="onDelete(i.id)" size="small"><ion-icon name="trash"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
+    
+  <form>
+    <div id="submission">
+      <ion-text><p>Total: £{{ sum | number:'1.2-2' }}</p></ion-text>
+      <ion-button [disabled]="sum == 0" type="button" (click)="onSubmitAll()">Submit Expenses</ion-button>
+    </div>
+  </form>
+
 </ion-content>
