@@ -2,7 +2,7 @@
   "name": "expenses",
   "version": "0.0.1",
   "author": "Ionic Framework",
-  "homepage": "https://philthebrave.github.io/expensesapp/",
+  "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
